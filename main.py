@@ -2,9 +2,21 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Font, Border, Side
+import os
+import sys
+import time
+
+# Function to get the current directory of the script or executable
+def get_current_dir():
+    if getattr(sys, 'frozen', False):
+        # If the application is run as a bundled executable
+        return os.path.dirname(sys.executable)
+    else:
+        # If the application is run as a script
+        return os.path.dirname(os.path.abspath(__file__))
 
 # Load the new data Excel file
-new_data_file_path = 'Kilkenny tankering. 2023 (5).xlsx'
+new_data_file_path = os.path.join(get_current_dir(), 'Kilkenny tankering. 2023 (5).xlsx')
 df = pd.read_excel(new_data_file_path, sheet_name='June', header=2)
 
 # Rename 'Location' to 'Source'
@@ -51,8 +63,11 @@ for row in ws.iter_rows(min_row=4, max_row=ws.max_row, min_col=1, max_col=ws.max
         cell.font = Font(bold=True, size=14)
         cell.border = thin_border
 
-# Save the workbook
-output_file_path = 'output.xlsx'
+# Save the workbook to the same directory as the executable
+output_file_path = os.path.join(get_current_dir(), 'output.xlsx')
 wb.save(output_file_path)
 
 print(f"Data has been saved to {output_file_path} with the desired formatting.")
+
+# Wait for 30 seconds before ending the application
+time.sleep(30)
