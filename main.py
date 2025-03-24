@@ -108,7 +108,7 @@ def import_file():
 
 # Create the main Tkinter window
 root = Tk()
-root.title("Import File Example")
+root.title("Enva Monthly Data Extractor")
 root.geometry("400x300")
 root.configure(bg="#2e3f4f")  # Dark background color
 
