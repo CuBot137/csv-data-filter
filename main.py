@@ -44,8 +44,9 @@ def extract_data_create_new_excel(file_path, sheet_name):
     if not all(col in df.columns for col in columns):
         messagebox.showerror("Error", f"Expected columns {columns} not found in the sheet {sheet_name}")
         return
-##############################################################################################
+    
     data_to_extract = df[columns]
+    
     # Ensure numeric conversion
     df['4500G'] = pd.to_numeric(df['4500G'], errors='coerce')
     df['4000g'] = pd.to_numeric(df['4000g'], errors='coerce')
@@ -60,7 +61,6 @@ def extract_data_create_new_excel(file_path, sheet_name):
     data_to_extract = df[columns]
 
     grouped_df = data_to_extract.groupby('Source').sum().reset_index()
-#################################################################################
     wb = Workbook()
     ws = wb.active
 
@@ -136,22 +136,26 @@ button_font = ("Helvetica", 12, "bold")
 frame = Frame(root, bg="#2e3f4f")
 frame.pack(pady=30, padx=30, fill="both", expand=True)
 
-sheet_name_label = Label(frame, text="Sheet Name:", font=label_font, bg="#2e3f4f", fg="#ffffff")
-sheet_name_label.pack(pady=5)
-
-sheet_name_combobox = ttk.Combobox(frame, font=entry_font, state="readonly")
-sheet_name_combobox.pack(pady=10)
-
+# First: Select file button
 select_file_button = Button(frame, text="Select Excel File", font=button_font, bg="#2196f3", fg="#ffffff",
                             padx=10, pady=5, bd=0, relief="ridge", highlightthickness=0,
                             activebackground="#1976d2", cursor="hand2", command=select_file)
 select_file_button.pack(pady=10)
 
-import_button = Button(frame, text="Import File", font=button_font, bg="#4caf50", fg="#ffffff",
+# Second: Sheet name dropdown
+sheet_name_label = Label(frame, text="Sheet Name", font=label_font, bg="#2e3f4f", fg="#ffffff")
+sheet_name_label.pack(pady=5)
+
+sheet_name_combobox = ttk.Combobox(frame, font=entry_font, state="readonly")
+sheet_name_combobox.pack(pady=10)
+
+# Third: Import file button
+import_button = Button(frame, text="Generate New Excel", font=button_font, bg="#4caf50", fg="#ffffff",
                        padx=10, pady=5, bd=0, relief="ridge", highlightthickness=0,
                        activebackground="#45a049", cursor="hand2", command=import_file)
 import_button.pack(pady=20)
 
+# Apply consistent button styling
 def style_button(button):
     button.config(
         borderwidth=0,
